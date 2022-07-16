@@ -1,0 +1,57 @@
+version: "3.4"
+
+services:
+  nginx-proxy:
+    container_name: codeline_nginx
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./nginx/Dockerfile.prod
+    volumes:
+      - /usr/src/ssl:/etc/nginx/ssl
+    ports:
+      - '80:80'
+      - '443:443'
+    environment: 
+      - VIRTUAL_HOST=cstu.narinphatwebdemo.com
+      - LETSENCRYPT_HOST=cstu.narinphatwebdemo.com
+      - NGINX_LE_EMAIL=kittamad.lim@dome.tu.ac.th
+      - NGINX_LE_FQDN=cstu.narinphatwebdemo.com
+      - NGINX_LE_LETSENCRYPT=true
+      - NGINX_LE_TZ=Asia/Bangkok
+    depends_on:
+      - api-server
+      - client
+
+  client:
+    image: oasurastudio/codeline-cstu-react:latest
+    build:
+      context: ./
+      dockerfile: ./client/Dockerfile.prod
+    depends_on:
+      - api-server
+    environment:
+      - NODE_ENV=production
+      - CHOKIDAR_USEPOLLING=true
+      - CI=true
+    ports:
+      - "3000:3000"
+    stdin_open: true
+
+  api-server:
+    build:
+      context: ./
+      dockerfile: ./server/Dockerfile.prod
+    environment:
+      - NODE_ENV=production
+      - SECRET=${SECRET}
+      - DEV_DB=${DEV_DB}
+      - DB_CONNECTION=${DB_CONNECTION}
+    ports:
+      - "8861:8861"
+
+networks:
+  default:
+    external:
+      name:
+        web_network

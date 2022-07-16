@@ -1,0 +1,31 @@
+{
+  "name": "cstu_codeline_server",
+  "version": "1.0.1",
+  "description": "api services for cstu_codeline",
+  "main": "server.js",
+  "scripts": {
+    "start": "node -r esm server.js",
+    "dev": "set NODE_ENV=development&& nodemon -L -r esm server.js"
+  },
+  "author": "poompichayout kongpiam",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "consola": "^2.15.3",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.3",
+    "morgan": "^1.10.0",
+    "mz": "^2.7.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
